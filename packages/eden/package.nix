@@ -140,9 +140,8 @@ pkgs.stdenv.mkDerivation {
   buildDir = "Release";
 
   installPhase = ''
-    mkdir -p $out/bin
-    ls
-    cp -r Release/eden* $out/bin/
+    mkdir -p $out/bin/
+    cp -r bin/eden* $out/bin/
   '';
 
   patches = [
