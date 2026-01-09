@@ -1,0 +1,13 @@
+diff --git a/src/dynarmic/externals/cpmfile.json b/src/dynarmic/externals/cpmfile.json
+index 1234567..abcdef0 100644
+--- a/src/dynarmic/externals/cpmfile.json
++++ b/src/dynarmic/externals/cpmfile.json
+@@ -18,9 +18,6 @@
+         "options": [
+             "MCL_INSTALL OFF"
+         ],
+-        "patches": [
+-            "0001-assert-macro.patch"
+-        ]
+     }
+ }
