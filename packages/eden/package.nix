@@ -143,6 +143,10 @@ pkgs.stdenv.mkDerivation {
     cp -r bin/eden* $out/bin/
   '';
 
+  postFixup = ''
+    wrapProgram $out/bin/eden --set QT_QPA_PLATFORM xcb
+  '';
+
   patches = [
     ./patches/disable-eden-mcl-patching.patch
   ];
