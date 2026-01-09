@@ -7,13 +7,6 @@ let
     rev = version;
     sha256 = "sha256-w5H6r9R3HuMTRw49GpMiIS9ELPmBQnZkQZ8buXkZkCA=";
   };
-  qtDependencies = with pkgs.qt6Packages; [
-    qt5compat
-    qtbase
-    qtmultimedia
-    qttools
-    qtwayland
-  ];
   xbyak = pkgs.fetchFromGitHub {
     owner = "herumi";
     repo = "xbyak";
@@ -118,7 +111,13 @@ pkgs.stdenv.mkDerivation {
       gamemode
       discord-rpc
     ]
-    ++ qtDependencies;
+    ++ (with pkgs.qt6Packages; [
+      qt5compat
+      qtbase
+      qtmultimedia
+      qttools
+      qtwayland
+    ]);
 
   cmakeFlags = [
     "-DCMAKE_C_COMPILER_LAUNCHER=sccache"
