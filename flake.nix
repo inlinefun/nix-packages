@@ -8,7 +8,10 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
-      eden = import ./packages/eden/package.nix { inherit pkgs; };
+      eden = import ./packages/eden/package.nix {
+        inherit pkgs;
+        cacheBuilds = true;
+      };
     in
     {
       packages.${system} = {

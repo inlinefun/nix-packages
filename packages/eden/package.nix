@@ -1,6 +1,12 @@
-{ pkgs, ... }:
+{
+  cacheBuilds ? false,
+  pkgs,
+  ...
+}:
 
 let
+  cpmSourceCache = if cacheBuilds then "/var/cache/cpm" else "$NIX_BUILD_TOP/cpm";
+  sccacheDir = if cacheBuilds then "/var/cache/sccache" else "$NIX_BUILD_TOP/sccache";
   version = "v0.0.4-rc3";
   src = pkgs.fetchgit {
     url = "https://git.eden-emu.dev/eden-emu/eden.git";
@@ -48,8 +54,6 @@ pkgs.stdenv.mkDerivation {
   inherit version src;
 
   pname = "eden";
-
-  SCCACHE_DIR = "/var/cache/sccache";
 
   nativeBuildInputs = with pkgs; [
     cmake
@@ -122,7 +126,7 @@ pkgs.stdenv.mkDerivation {
   cmakeFlags = [
     "-DCMAKE_C_COMPILER_LAUNCHER=sccache"
     "-DCMAKE_CXX_COMPILER_LAUNCHER=sccache"
-    "-DCPM_SOURCE_CACHE=/var/cache/cpm"
+    "-DCPM_SOURCE_CACHE=$CPM_SOURCE_CACHE"
     "-DCMAKE_BUILD_TYPE=Release"
     "-DCPM_DOWNLOAD_ALL=OFF"
     "-DCPM_xbyak_SOURCE=${xbyak}"
@@ -134,6 +138,10 @@ pkgs.stdenv.mkDerivation {
   ];
 
   preConfigure = ''
+    export SCCACHE_DIR=${sccacheDir}
+    export CPM_SOURCE_CACHE=${cpmSourceCache}
+
+    mkdir -p "$SCCACHE_DIR" "$CPM_SOURCE_CACHE"
     rm -rf .patch/mcl
   '';
   buildDir = "Release";
@@ -150,5 +158,13 @@ pkgs.stdenv.mkDerivation {
   patches = [
     ./patches/disable-eden-mcl-patching.patch
   ];
+
+  meta = {
+    description = "Eden is a free and opensource (FOSS) Switch 1 emulator, derived from Yuzu and Sudachi";
+    mainProgram = "eden";
+    license = with pkgs.lib.licenses; [
+      gpl3Plus
+    ];
+  };
 
 }
