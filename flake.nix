@@ -14,6 +14,9 @@
           pkgs = prev;
           cacheBuilds = final.config.eden.cacheBuilds or false;
         };
+        waywall = import ./packages/waywall/package.nix {
+          pkgs = prev;
+        };
       };
       packages.${system} =
         let
@@ -24,6 +27,7 @@
         in
         {
           eden = pkgs.eden;
+          waywall = pkgs.waywall;
         };
     };
 }
