@@ -10,7 +10,7 @@
       pkgs = import nixpkgs { inherit system; };
       eden = import ./packages/eden/package.nix {
         inherit pkgs;
-        cacheBuilds = true;
+        cacheBuilds = false;
       };
     in
     {
