@@ -4,21 +4,23 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
   outputs =
-    { nixpkgs, ... }:
+    { self, nixpkgs, ... }:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
-      eden = import ./packages/eden/package.nix {
-        inherit pkgs;
-        cacheBuilds = false;
-      };
     in
     {
-      packages.${system} = {
-        inherit eden;
+      overlays.default = final: prev: {
+        eden = import ./packages/eden/package.nix {
+          cacheBuilds = final.config.eden.cacheBuilds or false;
+        };
       };
-      devShells.${system} = {
-        inherit eden;
-      };
+      packages.${system} =
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [ self.overlays.default ];
+          };
+        in
+        pkgs.eden;
     };
 }
