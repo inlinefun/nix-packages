@@ -147,8 +147,9 @@ pkgs.stdenv.mkDerivation {
   buildDir = "Release";
 
   installPhase = ''
-    mkdir -p $out/bin/
-    cp -r bin/eden* $out/bin/
+    runHook preInstall
+    install -Dm755 bin/eden* -t $out/bin/
+    runHook postInstall
   '';
 
   postFixup = ''
