@@ -11,6 +11,7 @@
     {
       overlays.default = final: prev: {
         eden = import ./packages/eden/package.nix {
+          pkgs = prev;
           cacheBuilds = final.config.eden.cacheBuilds or false;
         };
       };
@@ -21,6 +22,8 @@
             overlays = [ self.overlays.default ];
           };
         in
-        pkgs.eden;
+        {
+          eden = pkgs.eden;
+        };
     };
 }
