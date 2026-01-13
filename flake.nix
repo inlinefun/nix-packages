@@ -14,6 +14,9 @@
           pkgs = prev;
           cacheBuilds = final.config.eden.cacheBuilds or false;
         };
+        ninjabrain-bot = import ./packages/ninjabrain-bot/package.nix {
+          pkgs = prev;
+        };
         waywall = import ./packages/waywall/package.nix {
           pkgs = prev;
         };
@@ -28,6 +31,7 @@
         {
           eden = pkgs.eden;
           waywall = pkgs.waywall;
+          ninjabrain-bot = pkgs.ninjabrain-bot;
         };
     };
 }
